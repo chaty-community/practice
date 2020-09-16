@@ -1,8 +1,8 @@
 // App.js
 import React from 'react';
-import Profile from './src/pages/Profile.js';
+import Navigator from './src/pages/Navigator';
 console.disableYellowBox = true;
 
 export default function App() {
-  return <Profile />;
+  return <Navigator />;
 }
