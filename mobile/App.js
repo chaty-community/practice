@@ -1,21 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
+// App.js
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import Login from './src/pages/Login';
+console.disableYellowBox = true;
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>チャティへようこそ！</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <Login />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'orange',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
