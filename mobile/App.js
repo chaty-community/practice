@@ -1,7 +1,7 @@
 // App.js
 import React from 'react';
-import Profile from './src/pages/Profile';
+import Users from './src/pages/Users';
 console.disableYellowBox = true;
 export default function App() {
-  return <Profile />;
+  return <Users />;
 }
