@@ -3,7 +3,7 @@ import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
 import OneUser from '../components/oneUser';
-const Users = () => {
+const Users = ({ navigation }) => {
   const friends = [
     {
       id: 1,
@@ -26,7 +26,7 @@ const Users = () => {
   ];
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff', marginTop: 100 }}>
+    <ScrollView style={{ backgroundColor: '#fff', marginBottom: 0 }}>
       <UserBox>
         <StyledImage
           source={{
@@ -52,7 +52,9 @@ const Users = () => {
             name={friend.name}
             img={friend.img}
             message={friend.status_message}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('RoomView');
+            }}
           />
         );
       })}

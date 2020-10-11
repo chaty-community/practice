@@ -1,8 +1,6 @@
-// App.js
 import React from 'react';
-import Rooms from './src/pages/Room';
+import Navigator from './src/pages/Navigator';
 console.disableYellowBox = true;
 export default function App() {
-  return <Rooms />;
+  return <Navigator />;
 }
-

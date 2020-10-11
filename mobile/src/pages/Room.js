@@ -20,7 +20,7 @@ const Rooms = () => {
     },
     {
       id: 1,
-      message: 'Chatyはじめました！',
+      message: 'Chatyはじめましたaaaa！',
       user_id: 1,
       createdAt: '2020-9-1T13:00:00',
     },
@@ -32,7 +32,6 @@ const Rooms = () => {
         width,
         height: height - 80,
         backgroundColor: '#5279aa',
-        marginTop: 100,
       }}
     >
       <KeyboardAvoidingView
