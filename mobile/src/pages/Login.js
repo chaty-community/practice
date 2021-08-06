@@ -9,8 +9,7 @@ import {
     TouchableOpacity
   } from 'react-native';
   import { LinearGradient } from 'expo-linear-gradient';
-  import { ImageBackground, Dimensions,View } from 'react-native';
-  import { LinearGradient } from 'expo-linear-gradient';
+
 
 const Login = () => {
   return (
@@ -18,7 +17,7 @@ const Login = () => {
       source={require('../../assets/img/background.png')}
       style={{ width: width, height: height, backgroundColor: '#ffffff' }}
     >
-        <styledView>
+        <StyledView>
         <StyledLogo source={require('../../assets/img/chaty-logo.png')} />
         <Label>名前</Label>
         <FormInput autoCapitalize="none" />
@@ -27,20 +26,21 @@ const Login = () => {
         <LoginBtn activeOpacity={0.9}>
           <StyledText>登録・ログイン</StyledText>
         </LoginBtn>
-        </styledView>
-        <styledBackgroundCover colors={['#0072ff','#00c6ff']}/>
+        </StyledView>
+        <StyledBackgroundCover colors={['#0072ff','#00c6ff']}/>
     </ImageBackground>
   );
 };
+
 const { width, height } = Dimensions.get('window');
-const styledView = styled(view)`
+const StyledView = styled(View)`
 height:410;
-margin-top:${(height - 410 ) / 2};
+margin-top:${(height - 410) / 2};
 z-index:10;
 `;
-const styledBackgroundCover = styled(LinearGradient)`
+const StyledBackgroundCover = styled(LinearGradient)`
 position:relative;
-button:${(height - 410) / 2 + 410};
+bottom:${(height - 410) / 2 + 410};
 height:100%;
 opacity:0.6;
 `;
