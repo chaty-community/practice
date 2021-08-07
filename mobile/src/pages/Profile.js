@@ -1,11 +1,15 @@
+// 必要なライブラリを読み込む
 import React from 'react';
+//TouchableOpacityはボタンを作るRNのタグ
 import { View, Text, TextInput, Image, Dimensions, TouchableOpacity } from 'react-native';
-
+//iconを表示するためのタグ
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
+//プロフィールコンポーネントをアロー関数で作成
+//ここが画面に表示される部分
 const Profile = () => {
-  
   return (
+    //JSX
     <StyledView>
       <ChangeIconSpace>
         <StyledImage source={require('../../assets/img/icon.png')} />
@@ -17,17 +21,22 @@ const Profile = () => {
       <StyledTouchableOpacity activeOpacity={0.8}>
         <Title>保存</Title>
       </StyledTouchableOpacity>
-      
+
       <LogoutBtn activeOpacity={0.8}>
+        {/* 使いたいアイコンをnameプロパティで指定、colorプロパティで色を、sizeプロパティで大きさを指定 */}
         <Icon name="sync-disabled" color="#7cc5db" size={40} />
         <LogoutLabel>ログアウトする</LogoutLabel>
+        {/* 使いたいアイコンをnameプロパティで指定、colorプロパティで色を、sizeプロパティで大きさを指定*/}
         <Icon name="navigate-next" color="#7cc5db" size={40} />
       </LogoutBtn>
-      
+
     </StyledView>
   );
 };
+//スタイルを定義
 const { width } = Dimensions.get('window');
+//スタイルドビューコンポーネントを作成している
+//import styled from 'styled-components';で読み込んだ
 const StyledView = styled(View)`
   background-color: #fff;
 `;
@@ -76,7 +85,7 @@ const Title = styled(Text)`
   padding-top: 8px;
   margin: 0 auto;
 `;
-
+// ボタンを作るRNのタグであるTouchableOpacityにスタイルを当てている。
 const LogoutBtn = styled(TouchableOpacity)`
   height: 40px;
   width: 100%;
@@ -93,4 +102,5 @@ const LogoutLabel = styled(Text)`
   color: #7cc5db;
   padding-top: 10px;
 `;
+
 export default Profile;

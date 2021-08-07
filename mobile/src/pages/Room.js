@@ -1,3 +1,4 @@
+//必要なライブラリを読み込む
 import React from 'react';
 import {
   Dimensions,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
+//Roomsコンポーネントを作成
 const Rooms = () => {
   const messages = [
     {
@@ -26,21 +28,23 @@ const Rooms = () => {
     },
   ];
   return (
+    // ImageBackgroundタグは背景画像を表示するためのタグ
     <ImageBackground
       source={require('../../assets/img/chatpage.png')}
       style={{
         width,
         height: height - 80,
         backgroundColor: '#5279aa',
-        marginTop: 100,
       }}
     >
+      {/* KeyboardAvoidingViewタグで囲むとキーボードが出てきたときにチャットがかくれなくなる */}
       <KeyboardAvoidingView
         behavior="padding"
         keyboardVerticalOffset={80}
         style={{ flex: 1 }}
         contentContainerStyle={{ height: height - 80 }}
       >
+        {/* StyledScrollViewタグはチャットを表示する部分 */}
         <StyledScrollView>
           {messages.map(oneMessage => {
             const { id, message, user_id, createdAt } = oneMessage;
@@ -48,6 +52,7 @@ const Rooms = () => {
               <StyledWrapperView key={id}>
                 <SendTime>{parsedTime(createdAt)}</SendTime>
                 <StyledRightView>
+                  {/* StyledViewタグ、チャットの中身を表示するためのタグ */}
                   <StyledView backgroundColor="#42d328">
                     <ChatText>{message}</ChatText>
                   </StyledView>
@@ -56,6 +61,7 @@ const Rooms = () => {
             );
           })}
         </StyledScrollView>
+        {/* ChatFooterでチャットページのフッターを実装 */}
         <ChatFooter>
           <StyledTextInput placeholder="メッセージを入力..." autoCapitalize="none" />
           <Icon name="send" size={38} color="#0072ff" />
@@ -64,6 +70,7 @@ const Rooms = () => {
     </ImageBackground>
   );
 };
+//スタイルを当てている
 const parsedTime = time => {
   const timeWithoutTZ = time.split('T')[1];
   const [hour, min] = timeWithoutTZ.split(':');

@@ -1,9 +1,12 @@
+// 必要なライブラリをインポート
 import React from 'react';
+//ScrollViewタグは縦にスクロールできる画面を作るためのタグ
 import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
+//OneUser.jsからOneUserコンポーネントをインポート
 import OneUser from '../components/oneUser';
-const Users = () => {
+const Users = ({ navigation }) => {
     const friends = [
         {
           id: 1,
@@ -26,8 +29,10 @@ const Users = () => {
       ];
 
   return (
-    <ScrollView style={{ backgroundColor: '#fff', marginTop: 100 }}>
+    // 縦にスクロールするためにviewタグではなくScrollViewタグで囲んでいる
+    <ScrollView style={{ backgroundColor: '#fff',}}>
       <UserBox>
+        {/* Imageタグにスタイルを当てて作ったStyledImageタグ。uriによって画像を読み込んでいる。 */}
         <StyledImage
           source={{
             uri: 'https://icooon-mono.com/i/icon_11205/icon_112051_64.png',
@@ -39,20 +44,32 @@ const Users = () => {
       <FriendsBar>
         <FriendsText>{`友だち ${friends.length}`}</FriendsText>
         <Icon
+        // iconタグはnameプロパティで使いたいアイコンを指定。
           name="person-outline"
           color="#7cc5db"
           size={16}
+          // containerStyleプロパティはIconタグにスタイルを当てるためのプロパティ
           containerStyle={{ position: 'absolute', top: 4, left: 3 }}
         />
       </FriendsBar>
+      {/* mapメソッドを定義、その際、friendという変数を定義*/}
       {friends.map(friend => {
         return (
+          // 上でOneUserコンポーネントをインポートしてここでOneUserタグとして使用
           <OneUser
+          // 変数friendのidを取得
             key={friend.id}
+          //変数friendのnameを取得
             name={friend.name}
+            //変数friendのimgを取得
             img={friend.img}
+            //変数friendのstatus_messageを取得
             message={friend.status_message}
-            onPress={() => {}}
+            onPress={() => {
+              // navigation.navigateとは、引数に取ったページに移動するためのメソッド
+              // 引数の中のRoomViewはNavigator.jsで定義している
+                navigation.navigate("RoomView");
+            }}
           />
         );
       })}

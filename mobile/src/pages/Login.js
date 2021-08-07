@@ -1,5 +1,8 @@
+// 必要なライブラリを読み込む
 import React from 'react';
+//RNの要素にスタイルを当てるための関数をインポートしている。
 import styled from 'styled-components';
+//react-nativeライブラリから読み込んでいる
 import {
     ImageBackground,
     Dimensions,
@@ -8,13 +11,20 @@ import {
     TextInput,
     TouchableOpacity
   } from 'react-native';
-  import { LinearGradient } from 'expo-linear-gradient';
+//グラデーションを当てるための要素
+import { LinearGradient } from 'expo-linear-gradient';
 
-
+// ログインコンポーネントをアロー関数で作成
+// イメージバックグラウンドタグで囲まれたビューを返す
+//ログインページの見た目を作っている部分。
 const Login = () => {
+  //return()という関数はreturn()の中のJSXを画面に描画するという意味
   return (
+    //JSX
     <ImageBackground
+    //表示したい画像のsource↓
       source={require('../../assets/img/background.png')}
+      //imageのスタイル↓
       style={{ width: width, height: height, backgroundColor: '#ffffff' }}
     >
         <StyledView>
@@ -32,7 +42,13 @@ const Login = () => {
   );
 };
 
+// スタイルを定義している
+
+//RNのDimensionクラスを使って、スマホの縦横のサイズを取得している。
 const { width, height } = Dimensions.get('window');
+//スタイルドビューコンポーネントを作成している
+//<View style={{height:410,marginTop:(height - 410) / 2,zIndex:10}}></View>と書くものを
+//import styled from 'styled-components';によって下記のような書き方にしている。
 const StyledView = styled(View)`
 height:410;
 margin-top:${(height - 410) / 2};
@@ -83,4 +99,6 @@ const StyledText = styled(Text)`
   color: #ffffff;
   padding-top: 9px;
 `;
+// 別のプログラムでLogin.jsを読み込むための記述
+//export default クラス名　は、このファイルで定義したJSXタグを外で使うために書く
 export default Login;

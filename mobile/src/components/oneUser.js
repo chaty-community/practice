@@ -1,6 +1,9 @@
+// このファイルはユーザーのコンポーネントを作成するためのファイル
+//必要なライブラリを読み込む
 import * as React from 'react';
 import { Dimensions, View, Text, TouchableOpacity, Image } from 'react-native';
 import styled from 'styled-components';
+//OneUserコンポーネントを作成
 const OneUser = ({ name, img, message, onPress }) => {
   return (
     <UserBox activeOpacity={1} onPress={onPress}>
