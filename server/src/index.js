@@ -17,26 +17,28 @@ app.get("/",(req,res)=>{
  });
 });
 
-app.post("/api/users/session",(req,res)=>{
+const {logIn,setProfile,getFriends}=require("./api/users");
 
+app.post("/api/users/session",(req,res)=>{
+ login(req,res);
 });
 
 app.post("/api/users/:id/edit",(req,res)=>{
-
+ setProfile(req,res);
 });
 
 app.post("/api/users/:id/friends",(req,res)=>{
-
+ getFriends(req,res);
 });
 
 app.post("/api/users/:id/find_room_id",(req,res)=>{
-
+ findRoomId(req,res);
 });
 
 app.get("/api/rooms/:id/messages",(req,res)=>{
-
+ getMessages(req,res);
 });
 
 app.post("/api/rooms/:id/message",(req,res)=>{
-
+ sendMessage(req,res);
 });
