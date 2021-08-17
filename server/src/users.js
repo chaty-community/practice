@@ -55,6 +55,22 @@ const login=async(req,res)=>{
  }
 };
 
+const setProfile=async(req,res)=>{
+ const id=req.param("id");
+ const {name,statusMessage}=req.body;
+ try{
+  const user=await User.findOne({
+   where:{id},
+  });
+  user.name=name;
+  user.status_message=statusMessage;
+  const updateUser=await user.save();
+ }catch(error){
+  res.status(500).json({error:"サーバーエラー"});
+ }
+};
+
 module.exports={
  login,
+ setProfile,
 };
