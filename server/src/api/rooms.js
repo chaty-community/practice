@@ -45,8 +45,24 @@ const getMessages=async(req,res)=>{
  }
 };
 
+const sendMessage=async(req,res)=>{
+ const room_id=req.param("id");
+ const {message,current_user_id}=req.bpdy;
+ try{
+  const postMessage=await Message.create({
+   message,
+   room_id,
+   user_id:current_user_id,
+  });
+  res.status(201).json({postMessage});
+ }catch(error){
+  res.status(500).json({error:"サーバーエラー"});
+ }
+};
+
 
 module.exports={
  findRoomId,
  getMessages,
+ sendMessage,
 };
