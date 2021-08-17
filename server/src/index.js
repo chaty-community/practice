@@ -20,7 +20,7 @@ app.get("/",(req,res)=>{
 const {logIn,setProfile,getFriends}=require("./api/users");
 
 app.post("/api/users/session",(req,res)=>{
- login(req,res);
+ logIn(req,res);
 });
 
 app.post("/api/users/:id/edit",(req,res)=>{
@@ -30,6 +30,8 @@ app.post("/api/users/:id/edit",(req,res)=>{
 app.post("/api/users/:id/friends",(req,res)=>{
  getFriends(req,res);
 });
+
+const {findRoomId,getMessages,sendMessage}=require("./api/rooms");
 
 app.post("/api/users/:id/find_room_id",(req,res)=>{
  findRoomId(req,res);

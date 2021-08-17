@@ -1,10 +1,11 @@
 const User=require("../../models").user;
 const Room=require("../../models").room;
 const Roomuser=require("../../models").roomsuser;
+const Sequelize=require("sequelize");
 const Op=Sequelize.Op;
 const bCrypt=require("bcryptjs");
 
-const login=async(req,res)=>{
+const logIn=async(req,res)=>{
  const {name,password}=req.body;
  try{
   const currentUser=await User.findOne({
@@ -32,7 +33,7 @@ const login=async(req,res)=>{
    });
    let users=await User.findAll({
     where:{
-     id{
+     id:{
       [Op.not]:newUser.id,
      },
     },
@@ -40,7 +41,7 @@ const login=async(req,res)=>{
    for(let user of users){
     const newRoom=await Room.create();
     await Roomuser.create({user_id:newUser.id,room_id:newRoom.id});
-    await Roomuser.create({user_id:user_id,room_id:newRoom.id});
+    await Roomuser.create({user_id:user.id,room_id:newRoom.id});
    }
    res.status(200).json({currentUser:newUser});
    return;
@@ -64,7 +65,8 @@ const setProfile=async(req,res)=>{
   });
   user.name=name;
   user.status_message=statusMessage;
-  const updateUser=await user.save();
+  const updatedUser=await user.save();
+  res.status(200).json({updatedUser});
  }catch(error){
   res.status(500).json({error:"サーバーエラー"});
  }
@@ -73,7 +75,7 @@ const setProfile=async(req,res)=>{
 const getFriends=async(req,res)=>{
      const user_id=req.param("id");
      try{
-      const ussers=await User.findAll({
+      const users=await User.findAll({
        where:{
         id:{
          [Op.not]:user_id,
@@ -84,10 +86,10 @@ const getFriends=async(req,res)=>{
      }catch(error){
       res.status(500).json({error:"サーバーエラー"});
      }
-    };    
+    };
 
 module.exports={
- login,
+ logIn,
  setProfile,
  getFriends,
 };

@@ -1,6 +1,6 @@
 const Message=require("../../models").message;
 const Room=require("../../models").room;
-const Roomuser=require("../../models").roomuser;
+const Roomuser=require("../../models").roomsuser;
 
 const findRoomId=async(req,res)=>{
  const currentUserId=req.param("id");
@@ -47,7 +47,7 @@ const getMessages=async(req,res)=>{
 
 const sendMessage=async(req,res)=>{
  const room_id=req.param("id");
- const {message,current_user_id}=req.bpdy;
+ const {message,current_user_id}=req.body;
  try{
   const postMessage=await Message.create({
    message,
