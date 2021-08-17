@@ -70,7 +70,24 @@ const setProfile=async(req,res)=>{
  }
 };
 
+const getFriends=async(req,res)=>{
+     const user_id=req.param("id");
+     try{
+      const ussers=await User.findAll({
+       where:{
+        id:{
+         [Op.not]:user_id,
+        },
+       },
+      });
+      res.status(200).json({friends:users});
+     }catch(error){
+      res.status(500).json({error:"サーバーエラー"});
+     }
+    };    
+
 module.exports={
  login,
  setProfile,
+ getFriends,
 };
