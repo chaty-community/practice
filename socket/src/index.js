@@ -3,6 +3,7 @@ io.on("connection",(socket)=>{
  console.log("[WebSocket Connected!]");
 
  socket.on("createMessage",(message)=>{
+  console.log(message);
   io.emit("newMessage",message);
  });
 
