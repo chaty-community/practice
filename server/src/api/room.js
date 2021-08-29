@@ -32,6 +32,21 @@ const Message = require("../../models").message;
     }
   };
 
+  const getMessages = async (req, res) => {
+    const room_id = req.param("id");
+    try {
+      const messages = await Message.findAll({
+        where: { room_id: room_id },
+        order: [["createdAt", "ASC"]],
+      });
+      res.status(200).json({ messages });
+    } catch (error) {
+      res.status(500).json({ error: "サーバーエラー" });
+    }
+  };
+ 
+
   module.exports = {
     findRoomId,
+    getMessages,
  };
