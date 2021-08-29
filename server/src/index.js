@@ -16,26 +16,31 @@ const express = require("express");
     });
   });
 
+  const { logIn, setProfile, getFriends } = require("./api/users");
+
   app.post("/api/users/session", (req, res) => {
-    // ユーザーのログイン処理 【07で実装】
+
+    logIn(req, res);
   });
   
   app.post("/api/users/:id/edit", (req, res) => {
-    // ユーザーのプロフィール設定処理 【08で実装】
+    setProfile(req, res);
   });
   
   app.post("/api/users/:id/friends", (req, res) => {
-    // ユーザーの全友だち取得処理 【09で実装】
+    getFriends(req, res);
   });
   
+  const { findRoomId, getMessages, sendMessage } = require("./api/rooms");
+
   app.post("/api/users/:id/find_room_id", (req, res) => {
-    // ユーザーの全ルームID取得処理 【10で実装】
+    findRoomId(req, res);
   });
   
   app.get("/api/rooms/:id/messages", (req, res) => {
-    // ルーム内の全メッセージ取得処理 【11で実装】
+    getMessages(req, res);
   });
   
   app.post("/api/rooms/:id/message", (req, res) => {
-    // ルーム内のメッセージ送信処理 【12で実装】
+    sendMessage(req, res);
   });
