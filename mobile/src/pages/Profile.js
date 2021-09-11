@@ -79,7 +79,7 @@ const LogoutBtn = styled(TouchableOpacity)`
   border-color: #7cc5db;
   border-top-width: 1px;
   border-bottom-width: 1px;
-  margin-top: 50px;
+  marin-top: 50px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
