@@ -19,7 +19,7 @@ import styled from 'styled-components';
        createdAt: '2020-9-1T12:00:00',
      },
      {
-       id: 2,
+       id: 1,
        message: 'Chatyはじめました！',
        user_id: 1,
        createdAt: '2020-9-1T13:00:00', 
@@ -33,7 +33,6 @@ import styled from 'styled-components';
         width,
         height: height - 80,
         backgroundColor: '#5279aa',
-        marginTop: 100,
       }}
     >
       <KeyboardAvoidingView

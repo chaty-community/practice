@@ -1,58 +1,60 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
-import { Icon } from 'react-native-elements';
-import styled from 'styled-components';
-import OneUser from '../components/oneUser';
+import React from "react";
+import { View, Text, Image, ScrollView, Dimensions } from "react-native";
+import { Icon } from "react-native-elements";
+import styled from "styled-components";
+import OneUser from "../components/oneUser";
 
-const Users = () => {
+const Users = ({ navigation }) => {
   const friends = [
    {
       id: 1,
-      name: '山田二郎',
-      img: 'https://icooon-mono.com/i/icon_15964/icon_159641_64.png',
-      status_message: 'カレーライス好き',
+      name: "山田二郎",
+      img: "https://icooon-mono.com/i/icon_15964/icon_159641_64.png",
+      status_message: "カレーライス好き",
    },
    {
       id: 2,
-      name: '佐藤三郎',
-      img: 'https://icooon-mono.com/i/icon_11068/icon_110681_64.png',
-      status_message: 'うどんよりそば派',
+      name: "佐藤三郎",
+      img: "https://icooon-mono.com/i/icon_11068/icon_110681_64.png",
+      status_message: "うどんよりそば派",
    },
    {
       id: 3,
-      name: '伊藤四郎',
-      img: 'https://icooon-mono.com/i/icon_11075/icon_110751_64.png',
-      status_message: 'うどんよりそば派',
+      name: "伊藤四郎",
+      img: "https://icooon-mono.com/i/icon_11075/icon_110751_64.png",
+      status_message: "うどんよりそば派",
    },
   ];
   return (
-    <ScrollView style={{ backgroundColor: '#fff', marginTop: 100 }}>
+    <ScrollView style={{ backgroundColor: "#fff" }}>
       <UserBox>
         <StyledImage
           source={{
-            uri: 'https://icooon-mono.com/i/icon_11205/icon_112051_64.png',
+            uri: "https://icooon-mono.com/i/icon_11205/icon_112051_64.png",
           }}
         />
         <UserName>チャティ太郎</UserName>
         <UserMessage>プログラミング勉強中</UserMessage>
       </UserBox>
       <FriendsBar>
-        <FriendsText>{`友だち ${friends.length}`}</FriendsText>
+        <FriendsText>{`友だち 0`}</FriendsText>
         <Icon
           name="person-outline"
           color="#7cc5db"
           size={16}
-          containerStyle={{ position: 'absolute', top: 4, left: 3 }}
+          containerStyle={{ position: "absolute", top: 4, left: 3 }}
         />  
       </FriendsBar>
-      {friends.map(friend => {
+      {friends.map((friend) => {
         return (
           <OneUser
             key={friend.id}
             name={friend.name}
             img={friend.img}
             message={friend.status_message}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate("RoomView");
+            }}  
           />
         );
       })}
@@ -60,7 +62,7 @@ const Users = () => {
   );
 };
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const StyledImage = styled(Image)`
   width: 56px;
   height: 56px;
