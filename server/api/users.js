@@ -1,9 +1,9 @@
+const bCrypt = require("bcryptjs");
 const User = require("../../models").user;
 const Room = require("../../models").room;
 const Roomuser = require("../../models").roomsuser;
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
-const bCrypt = require("bcryptjs");
 
 const logIn = async (req, res) => {
   const { name, password } = req.body;
@@ -56,6 +56,23 @@ const logIn = async (req, res) => {
   }
 };
 
+const setProfile = async (req, res) => {
+  const id = req.param("id");
+  const { name, statusMessage } = req.body;
+  try {
+    const user = await User.findOne({
+      where: { id },
+    });
+    user.name = name;
+    user.status_message = statusMessage;
+    const updatedUser = await user.save();
+    res.status(200).json({ updatedUser });
+  } catch (error) {
+    res.status(500).json({ error: "サーバーエラー" });
+  }
+};
+
 module.exports = {
   logIn,
+    setProfile,
 };
