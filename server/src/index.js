@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
-const apiServer = app.listen(3000, () => { console.log("PORT:" + apiServer.address().port) });
+const bodyParser = require("body-parser");
+const apiServer = app.listen(3000, function () { 
+  console.log("PORT:" + apiServer.address().port); 
+});
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -15,15 +18,23 @@ app.get("/", (req, res) => {
     ], 
   });
 });
+const { logIn, setProfile, getFriends } = require("./api/users");
 app.post("/api/users/session", (req, res) => {
+    logIn(req, res);
 });
 app.post("/api/users/:id/edit", (req, res) => {
+    setProfile(req, res);
 });
 app.post("/api/users/:id/friends", (req, res) => {
+    getFriends(req, res);
 });
+const { findRoomId, getMessages, sendMessage } = require("./api/rooms");
 app.post("/api/users/:id/find_room_id", (req, res) => {
+    findRoomId(req, res);
 });
 app.get("/api/rooms/:id/messages", (req, res) => {
+    getMessages(req, res);
 });
 app.post("/api/rooms/:id/message", (req, res) => {
+    sendMessage(req, res);
 });
