@@ -5,7 +5,6 @@ const apiServer = app.listen(3000, function () {
   console.log("PORT:" + apiServer.address().port); 
 });
 
-const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.get("/", (req, res) => {
