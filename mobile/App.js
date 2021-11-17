@@ -1,7 +1,7 @@
 import React from 'react';
-import Users from './src/pages/Users';
+import Rooms from './src/pages/Room';
 console.disableYellowBox = true;
 
 export default function App() {
-  return <Users />;
+  return <Rooms />;
 }
