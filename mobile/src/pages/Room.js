@@ -34,7 +34,6 @@ const Rooms = () => {
         width,
         height: height - 80,
         backgroundColor: '#5279aa',
-        marginTop: 100,
      }}
     >
      <KeyboardAvoidingView
