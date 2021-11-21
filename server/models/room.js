@@ -1,24 +1,12 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class room extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-    }
-  };
-  room.init({
-    room_creating_user_id: DataTypes.INTEGER
+  const room = sequelize.define('room', {
   }, {
-    sequelize,
-    modelName: 'room',
-    underscored: true,
+   underscored: true,
   });
-  return room;
+  room.associate = function(models) {
+  room.hasMany(models.roomsuser, { foreignKey: 'room_id' });
+  room.hasMany(models.message, { foreignKey: 'room_id' });
+  };
+  return room; 
 };
