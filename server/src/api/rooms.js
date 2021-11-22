@@ -54,7 +54,7 @@ const sendMessage = async (req, res) => {
       room_id,
       user_id: current_user_id,
     });
-    res.status(201).json({ postMessage });
+    res.status(200).json({ postMessage });
   } catch (error) {
     res.status(500).json({ error: "サーバーエラー" });
   }
