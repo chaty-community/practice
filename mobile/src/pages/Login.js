@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { 
   ImageBackground, 
@@ -6,11 +6,38 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import urls from "../env.js";
 
-const Login = () => {
+const Login = ({ navigation }) => {
+  const [userName, setUserName] = useState("");
+  const onChangeName = (text) => setUserName(text);
+  const [password, setPassword] = useState("");
+  const onChangePassword = (text) => setPassword(text);
+  const onPressLogin = async () => {
+    if (userName == "" || password == "") return;
+    const response = await fetch(`${urls.api_server}/api/users/session`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({ name: userName, password: password }),
+    });
+    if (response.status == 200) {
+      const responseJSON = await response.json();
+      const { id, name, img, status_message } = responseJSON.currentUser;
+      AsyncStorage.setItem("isLoggedIn", "true");
+      AsyncStorage.setItem("myId", `${id}`);
+      AsyncStorage.setItem("myName", `${name}`);
+      AsyncStorage.setItem("myImg", `${img}`);
+      AsyncStorage.setItem("myStatusMessage", `${status_message}`);
+      navigation.navigate("UsersView");
+    }
+  };
   return (
     <ImageBackground
      source={require('../../assets/img/background.png')}
@@ -19,10 +46,19 @@ const Login = () => {
       <StyledView>
         <StyledLogo source={require('../../assets/img/chaty-logo.png')} />
         <Label>名前</Label>
-        <FormInput autoCapitalize="none" />
+        <FormInput 
+          value={userName}
+          onChangeText={(text) => onChangeName(text)}
+          autoCapitalize="none" 
+        />
         <Label>パスワード</Label>
-        <FormInput autoCapitalize="none" secureTextEntry={true} />
-        <LoginBtn activeOpacity={0.9}>
+        <FormInput
+          value={password}
+          onChangeText={(text) => onChangePassword(text)} 
+          autoCapitalize="none"
+          secureTextEntry={true} 
+        />
+        <LoginBtn onPress={onPressLogin} activeOpacity={0.9}>
           <StyledText>登録・ログイン</StyledText>
         </LoginBtn>
       </StyledView>

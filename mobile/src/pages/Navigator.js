@@ -1,12 +1,13 @@
-import React from 'react';
-import { Text } from 'react-native';
-import { Icon } from 'react-native-elements';
-import Profile from './Profile';
-import Room from './Room';
-import Users from './Users';
-import { createBottomTabNavigator } from 'react-navigation-tabs';
-import { createStackNavigator } from 'react-navigation-stack';
-import { createAppContainer } from 'react-navigation';
+import React from "react";
+import { Text } from "react-native";
+import { Icon } from "react-native-elements";
+import Profile from "./Profile";
+import Room from "./Room";
+import Users from "./Users";
+import Login from "./Login";
+import { createBottomTabNavigator } from "react-navigation-tabs";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
 
 class Navigator extends React.Component {
   render() {
@@ -19,43 +20,49 @@ export default Navigator;
 
 const UsersNavigator = createStackNavigator(
   {
+    LoginView: {
+      screen: Login,
+      navigationOptions: {
+        header: null,
+      },
+    },
     UsersView: {
       screen: Users,
       navigationOptions: {
-        title: 'ユーザーリスト',
+        title: "ユーザーリスト",
         headerLeft: null,
         headerStyle: {
-          backgroundColor: '#002f6a',
-          borderBottomColor: '#002f6a',
+          backgroundColor: "#002f6a",
+          borderBottomColor: "#002f6a",
           borderBottomWidth: 2,
           height: 100,
         },
         headerTitleStyle: {
-          color: '#ffffff',
+          color: "#ffffff",
         },
-        headerTintColor: '#ffffff',
+        headerTintColor: "#ffffff",
       },
     },
     RoomView: {
       screen: Room,
       navigationOptions: {
-        title: 'チャットルーム',
+        title: "チャットルーム",
         headerStyle: {
-          backgroundColor: '#002f6a',
-          borderBottomColor: '#002f6a',
+          backgroundColor: "#002f6a",
+          borderBottomColor: "#002f6a",
           borderBottomWidth: 2,
           height: 100,
         },
         headerTitleStyle: {
-          color: '#ffffff',
+          color: "#ffffff",
         },
-        headerTintColor: '#ffffff',
-        headerBackTitle: '戻る',
+        headerTintColor: "#ffffff",
+        headerBackTitle: "戻る",
       },
     },
   },
   {
-    initialRouteName: 'UsersView',
+    initialRouteName: "LoginView",
   }
 );
 
@@ -148,5 +155,5 @@ const SignedInNavigator = createBottomTabNavigator(
 );
 
 UsersNavigator.navigationOptions = ({ navigation }) => ({
-  tabBarVisible: navigation.state.index === 0,
+  tabBarVisible: navigation.state.index === 1,
 });
