@@ -12,12 +12,23 @@ import {
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
 import urls from "../env.js";
+import { socket } from "../../App";
 
 const Rooms = ({ navigation }) => {
   useEffect(() => {
     setInformation();
     getMessagesOfThisRoom();
+    realTimeChatFetch();
 }, []);
+
+const realTimeChatFetch = () => {
+  socket.on("newMessage", async (message) => {
+    const currentRoomId = await AsyncStorage.getItem("currentRoomId");
+    if (message.room_id == currentRoomId) {
+      getMessagesOfThisRoom();
+    }
+  });
+};
 
 const { friendId, friendName, friendImg } = navigation.state.params;
 const [myId, setMyId] = useState(0);
@@ -75,6 +86,9 @@ const onPressSendMessage = async () => {
    }
  );
  setText("");
+ const responseJSON = await response.json();
+ const { postMessage } = responseJSON;
+ socket.emit("createMessage", postMessage);
 };
 
   return (
