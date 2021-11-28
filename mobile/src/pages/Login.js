@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 import { 
   ImageBackground, 
   Dimensions, 
@@ -8,8 +8,8 @@ import {
   TextInput,
   TouchableOpacity,
   AsyncStorage,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import urls from "../env.js";
 
 const Login = ({ navigation }) => {
@@ -40,11 +40,11 @@ const Login = ({ navigation }) => {
   };
   return (
     <ImageBackground
-     source={require('../../assets/img/background.png')}
-     style={{ width: width, height: height, backgroundColor: '#ffffff' }}
+     source={require("../../assets/img/background.png")}
+     style={{ width: width, height: height, backgroundColor: "#ffffff" }}
     >
       <StyledView>
-        <StyledLogo source={require('../../assets/img/chaty-logo.png')} />
+        <StyledLogo source={require("../../assets/img/chaty-logo.png")} />
         <Label>名前</Label>
         <FormInput 
           value={userName}
@@ -62,12 +62,12 @@ const Login = ({ navigation }) => {
           <StyledText>登録・ログイン</StyledText>
         </LoginBtn>
       </StyledView>
-      <StyledBackgroundCover colors={['#0072ff', '#00c6ff']} />
+      <StyledBackgroundCover colors={["#0072ff", "#00c6ff"]} />
     </ImageBackground> 
   );
 };
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 const StyledView = styled(View)`
   height: 410;
   margin-top: ${(height - 410) / 2};

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dimensions,
   View,
@@ -7,25 +7,75 @@ import {
   TextInput,
   ImageBackground,
   KeyboardAvoidingView,
+  AsyncStorage,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import styled from 'styled-components';
+import urls from "../env.js";
 
-const Rooms = () => {
-  const messages = [
-    {
-      id: 1,
-      message: 'こんにちは',
-      user_id: 1,
-      createdAt: '2020-9-1T12:00:00',
+const Rooms = ({ navigation }) => {
+  useEffect(() => {
+    setInformation();
+    getMessagesOfThisRoom();
+}, []);
+
+const { friendId, friendName, friendImg } = navigation.state.params;
+const [myId, setMyId] = useState(0);
+const setInformation = async () => {
+  const myId = await AsyncStorage.getItem('myId');
+  setMyId(myId);
+};
+const [messages, setMessages] = useState([]);
+const [roomId, setRoomId] = useState(0);
+const getMessagesOfThisRoom = async () => {
+  const myId = await AsyncStorage.getItem('myId');
+  const responseOne = await fetch(`${urls.api_server}/api/users/${myId}/find_room_id`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
-    {
-      id: 2,
-      message: 'Chatyはじめました！',
-      user_id: 1,
-      createdAt: '2020-9-1T13:00:00',
+    method: 'POST',
+    body: JSON.stringify({
+      friendId: friendId,
+    }),
+  });
+  const responseJSONOne = await responseOne.json();
+  const { currentRoomId } = responseJSONOne;
+  setRoomId(currentRoomId);
+
+  await AsyncStorage.removeItem('currentRoomId');
+  await AsyncStorage.setItem('currentRoomId', `${currentRoomId}`);
+
+  const responseTwo = await fetch(`${urls.api_server}/api/rooms/${currentRoomId}/messages`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
-  ];
+    method: 'GET',
+  });
+  const responseJSONTwo = await responseTwo.json();
+  const { messages } = responseJSONTwo;
+  setMessages(messages);
+};
+const [text, setText] = useState("");
+const onPressSendMessage = async () => {
+  const myId = await AsyncStorage.getItem("myId");
+  const response = await fetch(
+    `${urls.api_server}/api/rooms/${roomId}/message`,
+   {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      message: text,
+      current_user_id: myId,
+    }),
+   }
+ );
+ setText("");
+};
 
   return (
     <ImageBackground
@@ -58,8 +108,18 @@ const Rooms = () => {
         })}
       </StyledScrollView>
       <ChatFooter>
-        <StyledTextInput placeholder="メッセージを入力..." autoCapitalize="none" />
-        <Icon name="send" size={38} color="#0072ff" />
+        <StyledTextInput
+          placeholder="メッセージを入力..."
+          autoCapitalize="none"
+          value={text}
+          onChangeText={(text) => setText(text)}
+        />
+        <Icon
+          name="send"
+          size={38}
+          color={text.trim() == "" ? "#dddddd" : "#0072ff"}
+          onPress={onPressSendMessage}
+        />
       </ChatFooter>
      </KeyboardAvoidingView>
     </ImageBackground>

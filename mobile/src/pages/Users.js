@@ -1,40 +1,65 @@
-import React from 'react';
-import { View, Text, Image, ScrollView, Dimensions } from 'react-native';
-import { Icon } from 'react-native-elements';
-import styled from 'styled-components';
-import OneUser from '../components/oneUser';
+import React, { useState, useEffect } from "react";
+import { View, Text, Image, ScrollView, Dimensions, AsyncStorage } from "react-native";
+import { Icon } from "react-native-elements";
+import styled from "styled-components";
+import OneUser from "../components/oneUser";
+import urls from "../env.js";
 
 const Users = ({ navigation }) => {
-  const friends = [
-    {
-      id: 1,
-      name: '山田二郎',
-      img: 'https://icooon-mono.com/i/icon_15964/icon_159641_64.png',
-      status_message: 'カレーライス好き',
-    },
-    {
-      id: 2,
-      name: '佐藤三郎',
-      img: 'https://icooon-mono.com/i/icon_11068/icon_110681_64.png',
-      status_message: 'うどんよりそば派',
-    },
-    {
-      id: 3,
-      name: '伊藤四郎',
-      img: 'https://icooon-mono.com/i/icon_11075/icon_110751_64.png',
-      status_message: 'うどんよりそば派',
-    },
-  ];
+  useEffect(() => {
+    getMyInfo();
+    getFriends();
+  }, []);
+
+  const [friends, setFriends] = useState([]);
+  const getFriends = async () => {
+    const currentUserId = await AsyncStorage.getItem("myId");
+    const response = await fetch(
+      `${urls.api_server}/api/users/${currentUserId}/friends`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "POST",
+      }
+    );
+    const responseJSON = await response.json();
+    const { friends } = responseJSON;
+    setFriends(friends);
+  };
+
+  const [myName, setMyName] = useState("");
+  const [myImg, setMyImg] = useState("");
+  const [myStatusMessage, setMyStatusMessage] = useState("");
+  const getMyInfo = async () => {
+    const myName = await AsyncStorage.getItem("myName");
+    setMyName(myName);
+    const myImg = await AsyncStorage.getItem("myImg");
+    setMyImg(myImg);
+    const myStatusMessage = await AsyncStorage.getItem("myStatusMessage");
+    setMyStatusMessage(myStatusMessage);
+};
+  const onPressFriend = (friendId, friendName, friendImg) => {
+    navigation.navigate('RoomView', {
+      friendId: friendId,
+      friendName: friendName,
+      friendImg: friendImg,
+    });
+  };  
+
   return (
-    <ScrollView style={{ backgroundColor: '#fff' }}>
+    <ScrollView style={{ backgroundColor: "#fff" }}>
       <UserBox>
         <StyledImage
           source={{
-            uri: 'https://icooon-mono.com/i/icon_11205/icon_112051_64.png',
+            uri: myImg,
           }}
         />
-        <UserName>チャティ太郎</UserName>
-        <UserMessage>プログラミング勉強中</UserMessage>
+        <UserName>{myName}</UserName>
+        <UserMessage>
+          {myStatusMessage == "null" ? "" : myStatusMessage}
+        </UserMessage>
       </UserBox>
       <FriendsBar>
         <FriendsText>{`友だち ${friends.length}`}</FriendsText>
@@ -52,9 +77,7 @@ const Users = ({ navigation }) => {
             name={friend.name}
             img={friend.img}
             message={friend.status_message}
-            onPress={() => {
-              navigation.navigate("RoomView");
-            }}
+            onPress={() => onPressFriend(friend.id, friend.name, friend.img)}
           />
         );
       })}

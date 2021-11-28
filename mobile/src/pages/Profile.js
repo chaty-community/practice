@@ -1,22 +1,105 @@
-import React from 'react';
-import { View, Text, TextInput, Image, Dimensions, TouchableOpacity } from 'react-native';
-import { Icon } from 'react-native-elements';
-import styled from 'styled-components';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  AsyncStorage,
+  Alert
+} from "react-native";
+import { Icon } from "react-native-elements";
+import styled from "styled-components";
+import urls from "../env.js";
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+  const getUserProfile = async () => {
+    const currentUserName = await AsyncStorage.getItem("myName");
+    const currentUserImg = await AsyncStorage.getItem("myImg");
+    const currentUserStatusMessage = await AsyncStorage.getItem("myStatusMessage");
+    setName(currentUserName);
+    setStatusMessage(currentUserStatusMessage);
+    setImg(currentUserImg);
+  };
+  const [name, setName] = useState("");
+  const onChangeName = (text) => setName(text);
+  const [statusMessage, setStatusMessage] = useState("");
+  const onChangeStatusMessage = (text) => setStatusMessage(text);
+  const [img, setImg] = useState("");
+  const onPressProfileSave = async () => {
+    const currentUserId = await AsyncStorage.getItem("myId");
+    const response = await fetch(
+      `${urls.api_server}/api/users/${currentUserId}/edit`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name,
+          statusMessage,
+        }),
+      }
+    );
+    if (response.status == 200) {
+      Alert.alert("変更完了", "プロフィールを編集しました。");
+    }
+    const responseJSON = await response.json();
+    await AsyncStorage.setItem("myName", `${responseJSON.updatedUser.name}`);
+    await AsyncStorage.setItem(
+      "myStatusMessage",
+      `${responseJSON.updatedUser.status_message}`
+    );
+  };
+  const onPressLogoutBtn = () => {
+    Alert.alert(
+      "確認",
+      "本当にログアウトしますか？",
+      [
+        { text: "いいえ", style: "cancel" },
+        { text: "ログアウト", onPress: onPressLogout },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  const onPressLogout = async () => {
+    await AsyncStorage.removeItem("isLoggedIn");
+    await AsyncStorage.removeItem("myId");
+    await AsyncStorage.removeItem("myName");
+    await AsyncStorage.removeItem("myImg");
+    await AsyncStorage.removeItem("myStatusMessage");
+    navigation.navigate("LoginView");
+  };
+  
   return (
     <StyledView>
       <ChangeIconSpace>
-        <StyledImage source={require('../../assets/img/icon.png')} />
+        <StyledImage
+          source={{ uri: img }}
+        />
       </ChangeIconSpace>
       <Label>名前</Label>
-      <StyledTextInput autoCapitalize="none" />
+      <StyledTextInput
+        onChangeText={(text) => onChangeName(text)}
+        value={name}
+        autoCapitalize="none"
+      />
       <Label>ステータスメッセージ</Label>
-      <StyledTextInput autoCapitalize="none" />
-      <StyledTouchableOpacity activeOpacity={0.8}>
+      <StyledTextInput
+        onChangeText={(text) => onChangeStatusMessage(text)}
+        value={statusMessage}
+        autoCapitalize="none"
+      />
+      <StyledTouchableOpacity onPress={onPressProfileSave} activeOpacity={0.8}>
         <Title>保存</Title>
       </StyledTouchableOpacity>
-      <LogoutBtn activeOpacity={0.8}>
+      <LogoutBtn activeOpacity={0.8} onPress={onPressLogoutBtn}>
         <Icon name="sync-disabled" color="#7cc5db" size={40} />
         <LogoutLabel>ログアウトする</LogoutLabel>
         <Icon name="navigate-next" color="#7cc5db" size={40} />
@@ -24,7 +107,7 @@ const Profile = () => {
     </StyledView>
   );
 };
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 const StyledView = styled(View)`
   background-color: #fff;
 `;
