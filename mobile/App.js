@@ -1,5 +1,5 @@
-import React from 'react';
-import Navigator from './src/pages/Navigator';
+import React from "react";
+import Navigator from "./src/pages/Navigator";
 console.disableYellowBox = true;
 import urls from "./src/env";
 import io from "socket.io-client";

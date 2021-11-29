@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   View,
@@ -8,9 +8,9 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   AsyncStorage,
-} from 'react-native';
-import { Icon } from 'react-native-elements';
-import styled from 'styled-components';
+} from "react-native";
+import { Icon } from "react-native-elements";
+import styled from "styled-components";
 import urls from "../env.js";
 import { socket } from "../../App";
 
@@ -19,77 +19,77 @@ const Rooms = ({ navigation }) => {
     setInformation();
     getMessagesOfThisRoom();
     realTimeChatFetch();
-}, []);
+  }, []);
 
-const realTimeChatFetch = () => {
-  socket.on("newMessage", async (message) => {
-    const currentRoomId = await AsyncStorage.getItem("currentRoomId");
-    if (message.room_id == currentRoomId) {
-      getMessagesOfThisRoom();
-    }
-  });
-};
+  const realTimeChatFetch = () => {
+   socket.on("newMessage", async (message) => {
+     const currentRoomId = await AsyncStorage.getItem("currentRoomId");
+      if (message.room_id == currentRoomId) {
+        getMessagesOfThisRoom();
+      }
+   } );
+  };
 
-const { friendId, friendName, friendImg } = navigation.state.params;
-const [myId, setMyId] = useState(0);
-const setInformation = async () => {
-  const myId = await AsyncStorage.getItem('myId');
-  setMyId(myId);
-};
-const [messages, setMessages] = useState([]);
-const [roomId, setRoomId] = useState(0);
-const getMessagesOfThisRoom = async () => {
-  const myId = await AsyncStorage.getItem('myId');
-  const responseOne = await fetch(`${urls.api_server}/api/users/${myId}/find_room_id`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    method: 'POST',
-    body: JSON.stringify({
-      friendId: friendId,
-    }),
-  });
-  const responseJSONOne = await responseOne.json();
-  const { currentRoomId } = responseJSONOne;
-  setRoomId(currentRoomId);
+  const { friendId, friendName, friendImg } = navigation.state.params;
+  const [myId, setMyId] = useState(0);
+  const setInformation = async () => {
+    const myId = await AsyncStorage.getItem('myId');
+    setMyId(myId);
+  };
+  const [messages, setMessages] = useState([]);
+  const [roomId, setRoomId] = useState(0);
+  const getMessagesOfThisRoom = async () => {
+    const myId = await AsyncStorage.getItem('myId');
+    const responseOne = await fetch(`${urls.api_server}/api/users/${myId}/find_room_id`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        friendId: friendId,
+      }),
+    });
+    const responseJSONOne = await responseOne.json();
+    const { currentRoomId } = responseJSONOne;
+    setRoomId(currentRoomId);
 
-  await AsyncStorage.removeItem('currentRoomId');
-  await AsyncStorage.setItem('currentRoomId', `${currentRoomId}`);
+    await AsyncStorage.removeItem('currentRoomId');
+    await AsyncStorage.setItem('currentRoomId', `${currentRoomId}`);
 
-  const responseTwo = await fetch(`${urls.api_server}/api/rooms/${currentRoomId}/messages`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    method: 'GET',
-  });
-  const responseJSONTwo = await responseTwo.json();
-  const { messages } = responseJSONTwo;
-  setMessages(messages);
-};
-const [text, setText] = useState("");
-const onPressSendMessage = async () => {
-  const myId = await AsyncStorage.getItem("myId");
-  const response = await fetch(
-    `${urls.api_server}/api/rooms/${roomId}/message`,
-   {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({
-      message: text,
-      current_user_id: myId,
-    }),
-   }
- );
- setText("");
- const responseJSON = await response.json();
- const { postMessage } = responseJSON;
- socket.emit("createMessage", postMessage);
-};
+    const responseTwo = await fetch(`${urls.api_server}/api/rooms/${currentRoomId}/messages`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'GET',
+    });
+    const responseJSONTwo = await responseTwo.json();
+    const { messages } = responseJSONTwo;
+    setMessages(messages);
+  };
+  const [text, setText] = useState("");
+  const onPressSendMessage = async () => {
+    const myId = await AsyncStorage.getItem("myId");
+    const response = await fetch(
+      `${urls.api_server}/api/rooms/${roomId}/message`,
+      {
+       headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+       },
+       method: "POST",
+       body: JSON.stringify({
+         message: text,
+         current_user_id: myId,
+       }),
+      }
+    );
+    setText("");
+    const responseJSON = await response.json();
+    const { postMessage } = responseJSON;
+    socket.emit("createMessage", postMessage);
+  };
 
   return (
     <ImageBackground
