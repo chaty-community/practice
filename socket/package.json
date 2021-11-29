@@ -1,4 +1,7 @@
 {
+  "scripts": {
+  "start": "nodemon src/index.js"
+},
   "dependencies": {
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.14",
